@@ -14,39 +14,51 @@ def get_one_hop(transactions):
         for input in inputs:
             input = inputs[(in_counter)]
             in_counter = in_counter+1
-            addr_list.append(input['prev_out']['addr'])
+            addr_list.append(input["prev_out"]["addr"])
         for out in outs:
             out = outs[(out_counter)]
             out_counter = out_counter=1
-            addr_list.append(out['addr'])
+            addr_list.append(out["addr"])
         tx_count = tx_count+1
+    addr_list.remove(address)
+    return addr_list
 
 def get_address_balance(decoded_request):
     sat_balance = decoded_request["final_balance"]
     btc_balance = str(sat_balance/100000000)
-    print("Balance: " + btc_balance)
+    return btc_balance
 
 def get_tx_count(decoded_request):
     tx_count = str(decoded_request["n_tx"])
-    print("No. Transactions: " + tx_count)
+    return tx_count
     
 def basic_snoop(address, api_code):
     print("Basic snoop in progress...")
-    print("Address: " + (address))
     if api_code != "N/A":
         request = requests.get("https://blockchain.info/rawaddr/" + (address) + "?api_code=" + (api_code))
     else:
         request = requests.get("https://blockchain.info/rawaddr/" + (address))
     decoded_request = json.loads(request.text)
     transactions = decoded_request["txs"]
-    get_address_balance(decoded_request)
-    get_tx_count(decoded_request)
-    get_one_hop(transactions)
+    btc_balance = get_address_balance(decoded_request)
+    tx_count = get_tx_count(decoded_request)
+    addr_list = get_one_hop(transactions)
+
+    print("-------------------------------------------------------------")
+    print("Address:    " + (address))
+    print("Balance:    " + (btc_balance))
+    print("No. Txs:    " + (tx_count))
+    print("-------------------------------------------------------------")
+    print("One Hop:    ")
+    for item in addr_list:
+        print(item)
+    print("-------------------------------------------------------------")
+    
 
 BitSnoop = argparse.ArgumentParser(description="BitSnoop allows easy analysis of a Bitcoin address.")
-BitSnoop.add_argument('address', action='store', type=str, nargs=1, help="Holds target Bitcoin address")
-BitSnoop.add_argument('--bs', dest='basic_snoop', action='store_true', help="Basic snoop option")
-BitSnoop.add_argument('--es', dest='extensive_snoop', action='store_true', help="Extensive snoop option")
+BitSnoop.add_argument("address", action="store", type=str, nargs=1, help="Holds target Bitcoin address")
+BitSnoop.add_argument("--bs", dest="basic_snoop", action="store_true", help="Basic snoop option")
+BitSnoop.add_argument("--es", dest="extensive_snoop", action="store_true", help="Extensive snoop option")
 args = BitSnoop.parse_args()
 
 address_raw = str(args.address)
