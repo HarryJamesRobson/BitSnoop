@@ -2,6 +2,16 @@ import argparse
 import requests
 import json
 
+
+def get_address_balance(decoded_request):
+    sat_balance = decoded_request["final_balance"]
+    btc_balance = str(sat_balance/100000000)
+    return btc_balance
+
+def get_tx_count(decoded_request):
+    tx_count = str(decoded_request["n_tx"])
+    return tx_count
+
 def get_one_hop(transactions):
     addr_list = []
     tx_count = 0
@@ -23,14 +33,15 @@ def get_one_hop(transactions):
     addr_list.remove(address)
     return addr_list
 
-def get_address_balance(decoded_request):
-    sat_balance = decoded_request["final_balance"]
-    btc_balance = str(sat_balance/100000000)
-    return btc_balance
+def address_matches(addr_list):
+    addr_list_from_file = []
+    file = open("PATH HERE", "r")
 
-def get_tx_count(decoded_request):
-    tx_count = str(decoded_request["n_tx"])
-    return tx_count
+    
+    for line in file:
+        addr_list_from_file.append(line)
+    matches = list(set(addr_list) & set(addr_list_from_file))
+    return matches
     
 def basic_snoop(address, api_code):
     print("Basic snoop in progress...")
@@ -43,6 +54,7 @@ def basic_snoop(address, api_code):
     btc_balance = get_address_balance(decoded_request)
     tx_count = get_tx_count(decoded_request)
     addr_list = get_one_hop(transactions)
+    matches = address_matches(addr_list)
 
     print("-------------------------------------------------------------")
     print("Address:    " + (address))
@@ -53,7 +65,9 @@ def basic_snoop(address, api_code):
     for item in addr_list:
         print(item)
     print("-------------------------------------------------------------")
-    
+    print("Matches:    ")
+    print(matches)
+    print("-------------------------------------------------------------")
 
 BitSnoop = argparse.ArgumentParser(description="BitSnoop allows easy analysis of a Bitcoin address.")
 BitSnoop.add_argument("address", action="store", type=str, nargs=1, help="Holds target Bitcoin address")
@@ -76,4 +90,3 @@ elif args.extensive_snoop == True:
     extensive_snoop(address, api_code)
 else:
     print("You must enter an option. Type --help for help.")
-
