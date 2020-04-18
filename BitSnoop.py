@@ -75,7 +75,7 @@ def basic_snoop(address, api_code):
     print("Matches:    ")
     print(matches)
     print("-------------------------------------------------------------")
-
+    
 def extensive_snoop(address, api_code):
     print("Extensive snoop in progress...")
     if api_code != "N/A":
@@ -86,7 +86,6 @@ def extensive_snoop(address, api_code):
     transactions = decoded_request["txs"]
     btc_balance = get_address_balance(decoded_request)
     tx_count = get_tx_count(decoded_request)
-    
 
 BitSnoop = argparse.ArgumentParser(description="BitSnoop allows easy analysis of a Bitcoin address.")
 BitSnoop.add_argument("address", action="store", type=str, nargs=1, help="Holds target Bitcoin address")
@@ -110,4 +109,3 @@ elif args.extensive_snoop == True:
     extensive_snoop(address, api_code)
 else:
     print("You must enter an option. Type --help for help.")
-
