@@ -1,7 +1,7 @@
 import argparse
 import requests
 import json
-
+import os
 
 def get_address_balance(decoded_request):
     sat_balance = decoded_request["final_balance"]
@@ -30,14 +30,20 @@ def get_one_hop(transactions):
             out_counter = out_counter=1
             addr_list.append(out["addr"])
         tx_count = tx_count+1
-    addr_list.remove(address)
+    if address in addr_list:
+        addr_list.remove(address)
+    addr_list = list(dict.fromkeys(addr_list))
     return addr_list
+
+def get_path():
+    bit_snoop_path = os.path.dirname(os.path.abspath(__file__))
+    text_path = bit_snoop_path + "\\addresses_of_interest.txt"
+    return text_path
 
 def address_matches(addr_list):
     addr_list_from_file = []
-    file = open("PATH HERE", "r")
-
-    
+    path = get_path()
+    file = open(path)
     for line in file:
         addr_list_from_file.append(line)
     matches = list(set(addr_list) & set(addr_list_from_file))
@@ -55,7 +61,8 @@ def basic_snoop(address, api_code):
     tx_count = get_tx_count(decoded_request)
     addr_list = get_one_hop(transactions)
     matches = address_matches(addr_list)
-
+    if len(matches) < 1:
+        matches = "N/A"
     print("-------------------------------------------------------------")
     print("Address:    " + (address))
     print("Balance:    " + (btc_balance))
@@ -68,6 +75,18 @@ def basic_snoop(address, api_code):
     print("Matches:    ")
     print(matches)
     print("-------------------------------------------------------------")
+
+def extensive_snoop(address, api_code):
+    print("Extensive snoop in progress...")
+    if api_code != "N/A":
+        request = requests.get("https://blockchain.info/rawaddr/" + (address) + "?api_code=" + (api_code))
+    else:
+        request = requests.get("https://blockchain.info/rawaddr/" + (address))
+    decoded_request = json.loads(request.text)
+    transactions = decoded_request["txs"]
+    btc_balance = get_address_balance(decoded_request)
+    tx_count = get_tx_count(decoded_request)
+    
 
 BitSnoop = argparse.ArgumentParser(description="BitSnoop allows easy analysis of a Bitcoin address.")
 BitSnoop.add_argument("address", action="store", type=str, nargs=1, help="Holds target Bitcoin address")
@@ -83,6 +102,7 @@ if use_api == "y":
     api_code = input("Enter your api code: ")
 else:
     api_code = "N/A"
+print("\n\n")
 
 if args.basic_snoop == True:
     basic_snoop(address, api_code)
@@ -90,3 +110,4 @@ elif args.extensive_snoop == True:
     extensive_snoop(address, api_code)
 else:
     print("You must enter an option. Type --help for help.")
+
