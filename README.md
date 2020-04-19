@@ -10,4 +10,6 @@ BitSnoop can be run in a command line on a device with [Python](https://www.goog
 You will then be prompted to provide an api code. This is not required unless you are making a request on an address with an extremely large number of transactions or lots of requests on different addresses. To request an api code, click [here](https://api.blockchain.info/customer/signup).
 
 ## Other:
+I feel like I should also mention that this program was not made with the intention of violating privacy, but more so to demonstrate the transaparency of the blockchain and how easy it is to trace coins from one address to another.
+
 This program was written by Harry Robson. If you wish to ask any questions or help with its production in any way, please contact me. If this project comes in handy and you want to make a donation, my Bitcoin address is: 1GyJS5JeQMKm8zVcbwp6XUQCukrABV8Fts
