@@ -77,15 +77,15 @@ def basic_snoop(address, api_code):
     print("-------------------------------------------------------------")
     
 def extensive_snoop(address, api_code):
-    print("Extensive snoop in progress...")
-    if api_code != "N/A":
-        request = requests.get("https://blockchain.info/rawaddr/" + (address) + "?api_code=" + (api_code))
-    else:
-        request = requests.get("https://blockchain.info/rawaddr/" + (address))
-    decoded_request = json.loads(request.text)
-    transactions = decoded_request["txs"]
-    btc_balance = get_address_balance(decoded_request)
-    tx_count = get_tx_count(decoded_request)
+    print("Work In Progress...")
+##    if api_code != "N/A":
+##        request = requests.get("https://blockchain.info/rawaddr/" + (address) + "?api_code=" + (api_code))
+##    else:
+##        request = requests.get("https://blockchain.info/rawaddr/" + (address))
+##    decoded_request = json.loads(request.text)
+##    transactions = decoded_request["txs"]
+##    btc_balance = get_address_balance(decoded_request)
+##    tx_count = get_tx_count(decoded_request)
 
 BitSnoop = argparse.ArgumentParser(description="BitSnoop allows easy analysis of a Bitcoin address.")
 BitSnoop.add_argument("address", action="store", type=str, nargs=1, help="Holds target Bitcoin address")
