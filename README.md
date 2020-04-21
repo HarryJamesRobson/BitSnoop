@@ -2,7 +2,7 @@
 Command line program for the analysis of a Bitcoin address.
 
 ## Usage:
-BitSnoop can be run in a command line on a device with [Python](https://www.google.com) with the filename, a choice of '--es', '--bs' or '--help' and a target Bitcoin address. '--bs' (basic search) provides the balance, number of transactions, all the addresses within one hop of the target address and all addresses within one hop which match all specified addresses in the 'addresses_of_interest.txt' file. '--es' (extensive search) provides the balance, number of transactions, all transactions within a user specified amount of hops and all of those addresses which match those in the 'addresses_of_interest.txt' file. (Extensive snoop is currently under development and will be released within 2 weeks). This program is only tested on Python 3.8.
+BitSnoop can be run in a command line on a device with [Python](https://www.google.com) (only tested on Python 3.8 so far) with the filename, a choice of '--es', '--bs' or '--help' and a target Bitcoin address. '--bs' (basic search) provides the balance, number of transactions, all the addresses within one hop of the target address and all addresses within one hop which match all specified addresses in the 'addresses_of_interest.txt' file. '--es' (extensive search) provides the balance, number of transactions, all transactions within a user specified amount of hops and all of those addresses which match those in the 'addresses_of_interest.txt' file. (Extensive snoop is currently under development and will be released within 2 weeks). 
 
 #### Example:
     BitSnoop.py --bs 1GyJS5JeQMKm8zVcbwp6XUQCukrABV8Fts
